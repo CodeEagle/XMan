@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ColorizeSwift",
+        "repositoryURL": "git@github.com:mtynior/ColorizeSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "16cb4545a54311ca29d314fa3b907296285cfde9",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Yaml",
+        "repositoryURL": "git@github.com:behrang/YamlSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "901c4943f3206afb3b965bad2d1338e3c4fdbeba",
+          "version": "3.4.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
