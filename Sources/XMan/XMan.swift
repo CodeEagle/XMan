@@ -250,17 +250,17 @@ extension XMan {
         let template = """
         # project: "path/to/your/*.xcodeproj" # if not config, will get first xcodeproj in directory
         # carthage_folder: "./Carthage" # if not config, will be the `Carthage` folder in directory
-        framework_copy_tool: "/usr/local/bin/punic" # if not config, will using `/usr/local/bin/carthage`
+        # framework_copy_tool: "/usr/local/bin/punic" # if not config, will using `/usr/local/bin/carthage`
         deployment_target: "8.0" # for project
         carthage_frameworks: # custom framework array
           # - Alamofire # framework name in `Carthage/Build/iOS` without `.framework`
         target_configuration:
           - Demo: # target name
-              add_build_number_script: true
+              # add_build_number_script: true
               tests_target: DemoTests
-              embeded_libs:
+              # embeded_libs:
                 # - /path/to/your.dylib
-              custom_scripts:
+              # custom_scripts:
                 # - /path/to/your script
               platform: iOS #Mac
               deployment_target: "9.0" # for target
