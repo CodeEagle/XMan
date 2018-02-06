@@ -222,12 +222,12 @@ final class XMan {
             group.addFrameworks(infos: frameworks, toTraget: target, copyTool: frameworkCopyTool, copyPaths: copyPaths, isMac: isMac)
             if let testTarget = pbxproj.target(for: targetInfo.testsTarget) {
                 group.addFrameworks(infos: frameworks, toTraget: testTarget, copyTool: frameworkCopyTool, copyPaths: copyPaths, isMac: isMac)
+                testTarget.setDeploymentTarget(version: targetInfo.deploymentTarget, platform: targetInfo.platform, carthageExtraPath: extraPath)
             }
             let dylibsCopyPaths = targetInfo.frameworks.flatMap({ Optional("$(SRCROOT)/\($0)") })
             if dylibsCopyPaths.count > 0 {
                 group.addCopyDylibScript(dylibPaths: targetInfo.embededLibs, toTraget: target, copyPaths: dylibsCopyPaths)
             }
-            
             if target.isApp || target.isFramework || target.isTests {
                 target.setDeploymentTarget(version: targetInfo.deploymentTarget, platform: targetInfo.platform, carthageExtraPath: extraPath)
             }

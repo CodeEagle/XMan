@@ -5,19 +5,21 @@ OS?=sierra
 PREFIX?=/usr/local
 PROJECT?=XMan
 RELEASE_BINARY_FOLDER?=$(BUILD_FOLDER)/release/$(PROJECT)
-TEST_FOLDER=/Users/lincolnlaw/Documents/Repositories/Github/XMan/Tests/Demo
+TEST_FOLDER=/
 release:
 	swift build -c release -Xswiftc -static-stdlib
 build:
 	swift build  -Xswiftc "-D" -Xswiftc "DEBUG"
 test:
 	make build
+	OLDPWD=$(PWD)
 	cd $(TEST_FOLDER) && $(ROOT)/$(BUILD_FOLDER)/debug/$(PROJECT)
-	cd /Users/lincolnlaw/Documents/Repositories/Github/XMan
+	cd $(OLDPWD)
 restore:
 	make build
+	OLDPWD=$(PWD)
 	cd $(TEST_FOLDER) && $(ROOT)/$(BUILD_FOLDER)/debug/$(PROJECT) restore
-	cd /Users/lincolnlaw/Documents/Repositories/Github/XMan
+	cd $(OLDPWD)
 clean:
 	swift package clean
 	rm -rf $(BUILD_FOLDER) $(PROJECT).xcodeproj

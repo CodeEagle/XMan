@@ -38,6 +38,7 @@ final class PBXNativeTarget {
         guard let buildConfigurationListKey = target["buildConfigurationList"] as? String else { return }
         guard let buildConfigurationListObj = _pbxproj?.objects[buildConfigurationListKey] as? [String : Any] else { return }
         guard let buildConfigurationsKeys = buildConfigurationListObj["buildConfigurations"] as? [String] else { return }
+        Log.debug("setDeploymentTarget for \(self)")
         let platformKey =  platform == .iOS ? "IPHONEOS_DEPLOYMENT_TARGET" : "MACOSX_DEPLOYMENT_TARGET"
         let frameworkSearchPath = "$(PROJECT_DIR)\(carthageExtraPath)/Build/\(platform.rawValue)"
         let frameworkSearchPathKey = "FRAMEWORK_SEARCH_PATHS"

@@ -51,6 +51,7 @@ final class PBXproj {
         }
         return false
     }
+   
     private var _targets: [PBXNativeTarget] {
         guard let targetsKeys = _project["targets"] as? [String] else { return [] }
         var targets: [PBXNativeTarget] = []
@@ -68,15 +69,8 @@ final class PBXproj {
 }
 
 extension PBXproj {
-    
     func target(for name: String) -> PBXNativeTarget? {
-        if name == "" { return nil }
-        for target in _targets {
-            if target.name == name {
-                return target
-            }
-        }
-        return nil
+        return _targets.filter { $0.name == name }.first
     }
 }
 
