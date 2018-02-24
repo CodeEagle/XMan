@@ -186,6 +186,7 @@ final class PBXNativeTarget {
                 break
             }
         }
+        guard buildFileKeys.isEmpty == false else { return }
         let copyFilePhaseKey = PBXproj.uniqueId()
         let info: [String : Any] = [
             "isa" : "PBXCopyFilesBuildPhase",
