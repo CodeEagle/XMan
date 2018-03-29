@@ -216,7 +216,7 @@ final class XMan {
             let rawPlatform = targetInfo.platform.rawValue
             let base = (project as NSString).deletingLastPathComponent
             let extraPath = carthageFolder.replacingOccurrences(of: base, with: "")
-            let frameworks = targetInfo.frameworks.flatMap({ Optional("\(carthageFolder)/Build/\(rawPlatform)/\($0).framework") })
+            let frameworks = targetInfo.frameworks.flatMap({ Optional("$(SRCROOT)\(extraPath)/Build/\(rawPlatform)/\($0).framework") })
             let copyPaths = targetInfo.frameworks.flatMap({ Optional("$(SRCROOT)\(extraPath)/Build/\(rawPlatform)/\($0).framework") })
             let isMac = targetInfo.platform == .Mac
             group.addFrameworks(infos: frameworks, toTraget: target, copyTool: frameworkCopyTool, copyPaths: copyPaths, isMac: isMac)
