@@ -10,8 +10,8 @@ let package = Package(
         .executable(name: "XMan", targets: ["XMan"]),
     ],
     dependencies: [
-        .package(url: "git@github.com:behrang/YamlSwift.git", from: Version(3,4,0)),
-        .package(url: "git@github.com:mtynior/ColorizeSwift.git", from: Version(1,1,0)),
+        .package(url: "git@github.com:behrang/YamlSwift.git", from: Version(3,4,3)),
+        .package(url: "git@github.com:mtynior/ColorizeSwift.git", from: Version(1,2,0)),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

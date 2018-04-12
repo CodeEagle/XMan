@@ -10,7 +10,7 @@ import Yaml
 import ColorizeSwift
 
 final class XMan {
-    static let version = "0.0.4"
+    static let version = "0.0.5"
     enum Platform: String {
         case iOS, Mac
 
@@ -79,7 +79,7 @@ final class XMan {
             //target_configuration
             var infos: Set<TargetInfo> = []
             if let targetConfigurations = dict["target_configuration"].array {
-                let configs = targetConfigurations.flatMap({ $0.dictionary })
+                let configs = targetConfigurations.compactMap({ $0.dictionary })
                 for config in configs {
                     for (target, info) in config {
                         guard let name = target.string, let infoDict = info.dictionary else { continue }
@@ -107,7 +107,7 @@ final class XMan {
                                 }
                             } else {
                                 if let array = dict[Yaml(stringLiteral: commonFrameworksKey)].array {
-                                    let final = array.flatMap({$0.string})
+                                    let final = array.compactMap({$0.string})
                                     commonFrameworkMap[commonFrameworksKey] = final
                                     for item in final {
                                         frameworks.insert(item)
@@ -115,7 +115,7 @@ final class XMan {
                                 }
                             }
                         }
-                        if let orginalFrameworks = infoDict["frameworks"]?.array?.flatMap({$0.string}) {
+                        if let orginalFrameworks = infoDict["frameworks"]?.array?.compactMap({$0.string}) {
                             frameworks = frameworks.union(orginalFrameworks)
                         }
                         
@@ -131,11 +131,11 @@ final class XMan {
                                 exit(1)
                             }
                         }
-                        if let dylibs = infoDict["embeded_libs"]?.array?.flatMap({$0.string?.fixedShortcut}) {
+                        if let dylibs = infoDict["embeded_libs"]?.array?.compactMap({$0.string?.fixedShortcut}) {
                             totalDylibs.append(contentsOf: dylibs)
                         }
                         let removePrefixedPath = (project as NSString).deletingLastPathComponent
-                        let result = totalDylibs.flatMap({ (path) -> String? in
+                        let result = totalDylibs.compactMap({ (path) -> String? in
                             // not copy symbolic link
                             let ori = URL(fileURLWithPath: path)
                             var copy = ori
@@ -159,7 +159,7 @@ final class XMan {
                         Log.debug("dylibsSet: \(dylibsSet)")
                         //custom script
                         var scriptsSet: Set<String> = []
-                        if let scripts = infoDict["custom_scripts"]?.array?.flatMap({$0.string?.fixedShortcut}) {
+                        if let scripts = infoDict["custom_scripts"]?.array?.compactMap({$0.string?.fixedShortcut}) {
                             scriptsSet = scriptsSet.union(scripts)
                         }
                         
@@ -216,15 +216,15 @@ final class XMan {
             let rawPlatform = targetInfo.platform.rawValue
             let base = (project as NSString).deletingLastPathComponent
             let extraPath = carthageFolder.replacingOccurrences(of: base, with: "")
-            let frameworks = targetInfo.frameworks.flatMap({ Optional("$(SRCROOT)\(extraPath)/Build/\(rawPlatform)/\($0).framework") })
-            let copyPaths = targetInfo.frameworks.flatMap({ Optional("$(SRCROOT)\(extraPath)/Build/\(rawPlatform)/\($0).framework") })
+            let frameworks = targetInfo.frameworks.compactMap({ Optional("$(SRCROOT)\(extraPath)/Build/\(rawPlatform)/\($0).framework") })
+            let copyPaths = targetInfo.frameworks.compactMap({ Optional("$(SRCROOT)\(extraPath)/Build/\(rawPlatform)/\($0).framework") })
             let isMac = targetInfo.platform == .Mac
             group.addFrameworks(infos: frameworks, toTraget: target, copyTool: frameworkCopyTool, copyPaths: copyPaths, isMac: isMac)
             if let testTarget = pbxproj.target(for: targetInfo.testsTarget) {
                 group.addFrameworks(infos: frameworks, toTraget: testTarget, copyTool: frameworkCopyTool, copyPaths: copyPaths, isMac: isMac)
                 testTarget.setDeploymentTarget(version: targetInfo.deploymentTarget, platform: targetInfo.platform, carthageExtraPath: extraPath)
             }
-            let dylibsCopyPaths = targetInfo.frameworks.flatMap({ Optional("$(SRCROOT)/\($0)") })
+            let dylibsCopyPaths = targetInfo.frameworks.compactMap({ Optional("$(SRCROOT)/\($0)") })
             if dylibsCopyPaths.count > 0 {
                 group.addCopyDylibScript(dylibPaths: targetInfo.embededLibs, toTraget: target, copyPaths: dylibsCopyPaths)
             }

@@ -324,6 +324,10 @@ final class PBXNativeTarget {
                 break
             }
         }
+        let outputFiles = frameworks.compactMap { (item) -> String? in
+            guard let name = item.split(separator: "/").last else { return nil }
+            return "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\(name)"
+        }
         let copyFrameworkScriptKey = PBXproj.uniqueId()
         let info: [String : Any] = [
             "isa" : "PBXShellScriptBuildPhase",
@@ -332,7 +336,7 @@ final class PBXNativeTarget {
             "dstSubfolderSpec" : "10",
             "files" : [String](),
             "inputPaths" : frameworks,
-            "outputPaths" : [String](),
+            "outputPaths" : outputFiles,
             "shellPath" : "/bin/sh",
             "shellScript" : "\(tool) copy-frameworks\n#$(SRCROOT)/Carthage/Build/iOS/<name>.framework",
             "name": name,
